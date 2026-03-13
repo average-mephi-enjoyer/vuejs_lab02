@@ -30,9 +30,33 @@ class User {
         return this._tel;
     }
 
-    hello() {
-        console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`);
+    hello() { console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`); }
+}
+
+
+
+function User_2(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+User_2.prototype.hello = function() {
+    console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`);
+};
+
+
+
+class Student extends User {
+    #knowledge = 0;
+    constructor(name, age, tel = '') {
+        super(name, age, tel);
     }
+
+    get knowledge() { return this.#knowledge; }
+
+    hello() { console.log(`Hi! My name is ${this.name}. I am ${this.age} years old. And I am a student!`); }
+
+    learn() { this.#knowledge++; }
 }
 
 
@@ -52,16 +76,6 @@ function user_demo() {
 }
 
 
-function User_2(name, age) {
-    this.name = name;
-    this.age = age;
-}
-
-User_2.prototype.hello = function() {
-    console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`);
-};
-
-
 function user_demo_2() {
     let name = prompt('Введите имя:');
     let age = prompt('Введите возраст:');
@@ -76,11 +90,45 @@ function user_demo_2() {
 }
 
 
+function student_demo() {
+    try {
+        let name = prompt('Введите имя студента:');
+        let age = prompt('Введите возраст студента (целое число от 1 до 100):');
+        let tel = prompt('Введите телефон студента (или пропустите):');
+        let student = new Student(name, age, tel);
+        console.log('Создан объект Student:');
+        student.hello();
+        console.log('Телефон:', student.tel);
+        console.log('Начальные знания:', student.knowledge);
+
+        while (true) {
+            let learn_choice = prompt(`
+                Выберите действие:
+                1: обучить студента;
+                0: завершить работу со студентом.
+            `);
+            if (learn_choice === null) break;
+            learn_choice = learn_choice.trim();
+            if (learn_choice === '') continue;
+            if (learn_choice === '0') break;
+
+            if (learn_choice === '1') {
+                student.learn();
+                alert('Знания после learn: ' + student.knowledge);
+            }
+            else alert("Некорректный выбор!");
+        }
+    } catch (e) { alert('Ошибка: ' + e.message); }
+}
+
+
+
 while (true) {
     let choice = prompt(`
         Выберите действие:
         1: взаимодействовать с классом User;
         2: взаимодействовать с прототипом User;
+        3: взаимодействовать с классом Student;
         0: завершить работу.
         `);
     if (choice === null) break;
@@ -88,7 +136,7 @@ while (true) {
     if (choice === '') continue;
     if (choice === '0') break;
 
-    const funcs = { 1: user_demo, 2: user_demo_2 };
+    const funcs = { 1: user_demo, 2: user_demo_2, 3: student_demo };
     if (funcs[choice]) funcs[choice]();
     else alert("Некорректный выбор!");
 }
