@@ -4,8 +4,22 @@ function count_loads(){
     else count = Number(count);
     count++;
     localStorage.setItem('pageLoadCount', count);
-    alert(`Вы загрузили эту страницу ${count} раз ;)`);
+    alert(`Вы загрузили эту страницу ${count} раз ;-)`);
 }
+
+function load_image(url) {
+    return new Promise((resolve) => {
+        let img = new Image(); 
+        img.src = url;
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+            let p = document.createElement('p');
+            p.textContent = 'Can’t load image :-(';
+            resolve(p);
+        };
+    });
+}
+
 
 while (true) {
     let choice = prompt(`
