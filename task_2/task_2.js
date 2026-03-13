@@ -1,7 +1,23 @@
 class User {
-    constructor(name, age) {
+    constructor(name, age, tel = '') {
         this.name = name;
         this.age = age;
+        this.tel = tel;
+    }
+
+    _tel = '';
+
+    get tel() { return this._tel; }
+
+    set tel(n_tel) {
+        if (n_tel === null || n_tel.trim() === '') {
+            this._tel = '';
+            return;
+        }
+        const tel_re = /^\+7\d{10}$/;
+        if (tel_re.test(n_tel)) this._tel = n_tel;
+        else alert('Телефон должен быть в формате +7xxxxxxxxxx');
+        return;
     }
 
     hello() {
@@ -13,13 +29,15 @@ class User {
 function user_demo() {
     let name = prompt('Введите имя:');
     let age = prompt('Введите возраст:');
+    let tel = prompt('Введите телефон (или пропустите):');
     if (name === null || name.trim() === '' || age === null || age.trim() === '' || isNaN(Number(age)) || !isNaN(Number(age)) && Number(age) < 0) {
         alert('Некорректные данные для создания пользователя!');
         return;
     }
-    let user = new User(name, age);
-    console.log('Создан объект User:');
+    let user = new User(name, age, tel);
+    console.log('Создан объект User (class):');
     user.hello();
+    console.log('Телефон:', user.tel);
     alert('Пользователь создан.');
 }
 
