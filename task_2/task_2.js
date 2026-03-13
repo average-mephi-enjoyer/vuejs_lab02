@@ -1,13 +1,23 @@
 class User {
+    #age;
+    _tel = '';
+
     constructor(name, age, tel = '') {
         this.name = name;
         this.age = age;
         this.tel = tel;
     }
 
-    _tel = '';
+    get age() { return this.#age; }
 
-    get tel() { return this._tel; }
+    get tel() { if (this._tel) return this._tel; else return 'не указан'; }
+
+    set age(value) {
+        const num = Number(value);
+        if (Number.isInteger(num) && num >= 1 && num <= 100) this.#age = num;
+        else throw new Error('Возраст должен быть целым числом от 1 до 100');
+        return this.#age;
+    }
 
     set tel(n_tel) {
         if (n_tel === null || n_tel.trim() === '') {
@@ -16,8 +26,8 @@ class User {
         }
         const tel_re = /^\+7\d{10}$/;
         if (tel_re.test(n_tel)) this._tel = n_tel;
-        else alert('Телефон должен быть в формате +7xxxxxxxxxx');
-        return;
+        else throw new Error('Телефон должен быть в формате +7xxxxxxxxxx');
+        return this._tel;
     }
 
     hello() {
@@ -27,18 +37,18 @@ class User {
 
 
 function user_demo() {
-    let name = prompt('Введите имя:');
-    let age = prompt('Введите возраст:');
-    let tel = prompt('Введите телефон (или пропустите):');
-    if (name === null || name.trim() === '' || age === null || age.trim() === '' || isNaN(Number(age)) || !isNaN(Number(age)) && Number(age) < 0) {
-        alert('Некорректные данные для создания пользователя!');
-        return;
-    }
-    let user = new User(name, age, tel);
-    console.log('Создан объект User (class):');
-    user.hello();
-    console.log('Телефон:', user.tel);
-    alert('Пользователь создан.');
+    try {
+        let name = prompt('Введите имя:');
+        let age = prompt('Введите возраст (целое число от 1 до 100):');
+        let tel = prompt('Введите телефон в формате +7xxxxxxxxxx (или пропустите):');
+
+        let user = new User(name, age, tel);
+
+        console.log('Создан объект User:');
+        user.hello();
+        console.log('Телефон:', user.tel);
+        alert('Пользователь создан.');
+    } catch (e) { alert('Ошибка: ' + e.message); }
 }
 
 
