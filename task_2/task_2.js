@@ -24,10 +24,35 @@ function user_demo() {
 }
 
 
+function User_2(name, age) {
+    this.name = name;
+    this.age = age;
+}
+
+User_2.prototype.hello = function() {
+    console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`);
+};
+
+
+function user_demo_2() {
+    let name = prompt('Введите имя:');
+    let age = prompt('Введите возраст:');
+    if (name === null || name.trim() === '' || age === null || age.trim() === '' || isNaN(Number(age)) || !isNaN(Number(age)) && Number(age) < 0) {
+        alert('Некорректные данные для создания пользователя!');
+        return;
+    }
+    let user = new User_2(name, age);
+    console.log('Создан прототип User_2 с использованием функции:');
+    user.hello();
+    alert('Пользователь создан.');
+}
+
+
 while (true) {
     let choice = prompt(`
         Выберите действие:
         1: взаимодействовать с классом User;
+        2: взаимодействовать с прототипом User;
         0: завершить работу.
         `);
     if (choice === null) break;
@@ -35,6 +60,7 @@ while (true) {
     if (choice === '') continue;
     if (choice === '0') break;
 
-    if (choice === '1') user_demo();
-    else alert('Некорректный выбор!');
+    const funcs = { 1: user_demo, 2: user_demo_2 };
+    if (funcs[choice]) funcs[choice]();
+    else alert("Некорректный выбор!");
 }
