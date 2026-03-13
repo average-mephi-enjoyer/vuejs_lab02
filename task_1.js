@@ -22,6 +22,12 @@ function load_image(url) {
 }
 
 
+async function append_image(url, container) {
+    const element = await load_image(url);
+    container.appendChild(element);
+}
+
+
 function load_images_sequent_dialog() { // task 2
     let urls = [];
     for (let i = 0; i < 5; i++) {
@@ -45,7 +51,7 @@ function load_images_parallel_dialog() {    // task 3
         if (url === null) url = '';
         urls.push(url.trim());
     }
-    let container = document.getElementById('output_1');
+    let container = document.getElementById('output');
     container.innerHTML = '';
     urls.forEach(url => {
         load_image(url).then(element => {
@@ -55,12 +61,43 @@ function load_images_parallel_dialog() {    // task 3
 }
 
 
+async function load_images_sequent_async_dialog() { // task 4a
+    let urls = [];
+    for (let i = 0; i < 5; i++) {
+        let url = prompt(`Введите URL картинки ${i + 1}:`);
+        if (url === null) url = ''; 
+        urls.push(url.trim());
+    }
+    let promises = urls.map(url => load_image(url));
+    let results = await Promise.all(promises);
+    let container = document.getElementById('output');
+    container.innerHTML = '';
+    results.forEach(result => container.appendChild(result));
+}
+
+
+async function load_images_parallel_async_dialog() {    // task 4b
+    let urls = [];
+    for (let i = 0; i < 5; i++) {
+        let url = prompt(`Введите URL картинки ${i + 1}:`);
+        if (url === null) url = '';
+        urls.push(url.trim());
+    }
+    let container = document.getElementById('output_1');
+    container.innerHTML = '';
+    const tasks = urls.map(url => append_image(url, container));
+    await Promise.all(tasks);
+}
+
+
 while (true) {
     let choice = prompt(`
         Выберите задание:
         1: подсчёт количества загрузок страницы;
         2: загрузка изображений по URL последовательно;
         3: загрузка изображений по URL параллельно;
+        4: загрузка изображений по URL последовательно асинхронно;
+        5: загрузка изображений по URL параллельно асинхронно;);
         0: завершить работу.
         `);
     if (choice === null) break;
@@ -68,7 +105,8 @@ while (true) {
     if (choice === "") continue;
     if (choice === "0") break;
 
-    const funcs = { 1: count_loads, 2: load_images_sequent_dialog, 3: load_images_parallel_dialog };
+    const funcs = { 1: count_loads, 2: load_images_sequent_dialog, 3: load_images_parallel_dialog, 
+        4: load_images_sequent_async_dialog, 5: load_images_parallel_async_dialog };
     if (funcs[choice]) funcs[choice]();
     else alert("Некорректный выбор!");
   }
