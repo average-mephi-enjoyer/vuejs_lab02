@@ -8,17 +8,16 @@ class User {
         this.tel = tel;
     }
 
+    // getters
     get age() { return this.#age; }
-
     get tel() { if (this._tel) return this._tel; else return 'не указан'; }
 
+    // setters
     set age(value) {
         const num = Number(value);
         if (Number.isInteger(num) && num >= 1 && num <= 100) this.#age = num;
         else throw new Error('Возраст должен быть целым числом от 1 до 100');
-        return this.#age;
     }
-
     set tel(n_tel) {
         if (n_tel === null || n_tel.trim() === '') {
             this._tel = '';
@@ -27,12 +26,10 @@ class User {
         const tel_re = /^\+7\d{10}$/;
         if (tel_re.test(n_tel)) this._tel = n_tel;
         else throw new Error('Телефон должен быть в формате +7xxxxxxxxxx');
-        return this._tel;
     }
 
     hello() { console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`); }
 }
-
 
 
 function User_2(name, age) {
@@ -43,7 +40,6 @@ function User_2(name, age) {
 User_2.prototype.hello = function() {
     console.log(`Hi! My name is ${this.name}. And I am ${this.age} years old.`);
 };
-
 
 
 class Student extends User {
@@ -60,7 +56,7 @@ class Student extends User {
 }
 
 
-function user_demo() {
+function user_demo() {  // user tasks
     try {
         let name = prompt('Введите имя:');
         let age = prompt('Введите возраст (целое число от 1 до 100):');
@@ -76,7 +72,7 @@ function user_demo() {
 }
 
 
-function user_demo_2() {
+function user_demo_2() {    // task 2
     let name = prompt('Введите имя:');
     let age = prompt('Введите возраст:');
     if (name === null || name.trim() === '' || age === null || age.trim() === '' || isNaN(Number(age)) || !isNaN(Number(age)) && Number(age) < 0) {
@@ -90,7 +86,7 @@ function user_demo_2() {
 }
 
 
-function student_demo() {
+function student_demo() {   // task 5
     try {
         let name = prompt('Введите имя студента:');
         let age = prompt('Введите возраст студента (целое число от 1 до 100):');
@@ -122,14 +118,14 @@ function student_demo() {
 }
 
 
-Array.prototype.reverse = function() {
+Array.prototype.reverse = function() { // task 6 inst
     const copy = this.slice();
     this.push(...copy);
     return this;
 };
 
 
-function reverse_demo() {
+function reverse_demo() {       // task 6
     let input = prompt('Введите элементы массива через запятую (например: 1,2,3,4,5):');
     if (input === null) {
         alert('Отменённое действие. Попробуем снова.');

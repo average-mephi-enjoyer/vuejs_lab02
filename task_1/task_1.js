@@ -1,6 +1,6 @@
 const countries = [`Russia`, `Belarus`, `Afghanistan`, `China`, `Venezuela`, `Iran`];
 
-function count_loads(){
+function count_loads(){         // task 1
     let count = localStorage.getItem(`pageLoadCount`);
     if (count === null) count = 0;
     else count = Number(count);
@@ -30,7 +30,7 @@ async function append_image(url, container) {
 }
 
 
-function check_ip(ip) {
+function check_ip(ip) {     // task 5 check
     if (!ip) return Promise.resolve({ ip, banned: false });
     return fetch(`https://json.geoiplookup.io/${ip}`)
         .then(response => {
@@ -54,7 +54,7 @@ function check_ip(ip) {
 }
 
 
-function load_images_sequent_dialog() { // task 2
+function load_images_sequent_dialog() {     // task 2
     let urls = [];
     for (let i = 0; i < 5; i++) {
         let url = prompt(`Введите URL картинки ${i + 1}:`);
@@ -111,13 +111,13 @@ async function load_images_parallel_async_dialog() {    // task 4b
     }
     let container = document.getElementById(`output`);
     container.innerHTML = ``;
-    const tasks = urls.map(url => append_image(url, container));
+    let tasks = urls.map(url => append_image(url, container));
     await Promise.all(tasks);
 }
 
 
-async function ip_security_dialog() {
-    const ips = [];
+async function ip_security_dialog() {   // task 5
+    let ips = [];
     for (let i = 0; i < 5; i++) {
         let ip = prompt(`Введите IP-адрес ${i + 1}:`);
         if (ip === null) ip = ``;
