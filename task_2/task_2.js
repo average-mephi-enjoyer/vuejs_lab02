@@ -122,6 +122,27 @@ function student_demo() {
 }
 
 
+Array.prototype.reverse = function() {
+    const copy = this.slice();
+    this.push(...copy);
+    return this;
+};
+
+
+function reverse_demo() {
+    let input = prompt('Введите элементы массива через запятую (например: 1,2,3,4,5):');
+    if (input === null) {
+        alert('Отменённое действие. Попробуем снова.');
+        return;
+    }
+    let arr = input.split(',').map(item => item.trim()).filter(item => item !== '');
+    console.log('Исходный массив:', arr);
+    let result = arr.reverse();
+    console.log('После reverse():', result);
+    console.log('Исходный массив теперь:', arr);
+    alert('Результат в консоли.');
+}
+
 
 while (true) {
     let choice = prompt(`
@@ -129,6 +150,7 @@ while (true) {
         1: взаимодействовать с классом User;
         2: взаимодействовать с прототипом User;
         3: взаимодействовать с классом Student;
+        4: поработать с переопределённым методом reverse() для массивов;
         0: завершить работу.
         `);
     if (choice === null) break;
@@ -136,7 +158,7 @@ while (true) {
     if (choice === '') continue;
     if (choice === '0') break;
 
-    const funcs = { 1: user_demo, 2: user_demo_2, 3: student_demo };
+    const funcs = { 1: user_demo, 2: user_demo_2, 3: student_demo, 4: reverse_demo};
     if (funcs[choice]) funcs[choice]();
     else alert("Некорректный выбор!");
 }
